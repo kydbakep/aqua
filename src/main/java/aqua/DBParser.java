@@ -11,7 +11,7 @@ public class DBParser {
     private final File folder = new File("./storage/Photos");
 
     public void printFirstRow() throws IOException {
-        FileInputStream inputStream = new FileInputStream("./storage/Data/db-utf.txt");
+        FileInputStream inputStream = new FileInputStream("./src/main/resources/db-utf.txt");
         DataInputStream dataInputStream = new DataInputStream(inputStream);
         BufferedReader reader = new BufferedReader(new InputStreamReader(dataInputStream, "UTF-8"));
         Scanner s = new Scanner(reader);
