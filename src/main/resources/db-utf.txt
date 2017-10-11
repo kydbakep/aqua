@@ -1033,7 +1033,7 @@
 1033@Гудеевые @Goodeidae @Харакодон черноплавничный @Characodon audax @Центральная Америка (Мексика) @t 22-25@pH 7-8@dH 12-15@3-4,5@1-1-1
 1034@Гудеевые @Goodeidae @Харакодон радужный @Characodon lateralis @Центральная Америка (Мексика) @t 22-27@pH 7-8@dH 9-19@4-5,5@1-1-1
 1035@Гудеевые @Goodeidae @Ксенотока краснохвостая @Xenotoca eiseni (Characodon eiseni)@Центральная Америка (Мексика) @t 22-32@pH 6-8@dH 9-19@6@0-1-0
-1036@Гудеевые @Goodeidae @Зоогенетикус китцеонсис @Zoogeneticus quitzeoensis (Platypoecilus quitzeoensis)@Центральная Америка (Мексика) @t 25-28@pH 6,5-7,2@dH 5-15@3,5@0-1-1
+1036@Гудеевые @Goodeidae @Зоогенетикус китцеонсис @Zoogeneticus quitzeoensis (Platypoecilus quitzeoensis)@Центральная Америка (Мексика) @t 25-28@pH 6,5-7,1@dH 5-15@3,5@0-1-1
 1037@Полурыловые @Hemirhamphidae @Дермогенис карликовый (обыкновенный, полурыл бойцовый) @Dermogenys pusillus (Dermogenys pusillus)@Юго-Восточная Азия (Малайзия, Филлипины, Таиланд, Камбоджа) @t 20-26@pH 6-8@dH 9-19@6-7@1-0-0
 1038@Полурыловые @Hemirhamphidae @Полурыл красно-черный @Nomorhamphus liemi @Юго-Восточная Азия (Индонезия) @t 20-24@pH 6-8@dH 5-12@6@1-0-0
 1039@Карпозубые нотобранхи @Notobranchus @Голубой нотобранх @Nothobranchius eggersi@Африка (восточная Танзания)@t 24-28@pH 6,5-7@dH 5-8@5@0-1-1
