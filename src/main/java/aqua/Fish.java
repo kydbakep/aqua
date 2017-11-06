@@ -29,7 +29,7 @@ public class Fish extends DBParser {
         this.fishID = String.valueOf(Integer.parseInt(fish.split("@", 0)[0].trim()));
     }
 
-    private String getFishName() {
+    public String getFishName() {
         return fishName;
     }
 
@@ -71,6 +71,12 @@ public class Fish extends DBParser {
 
     public String getTemperature() {
         return temperature;
+    }
+    public String getTemperatureC() {
+        return temperatureC(temperature);
+    }
+    public String getTemperatureF() {
+        return temperatureF(temperature);
     }
 
     private void setTemperature(String fish) {

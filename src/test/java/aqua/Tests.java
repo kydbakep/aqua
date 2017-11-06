@@ -24,14 +24,9 @@ class Tests extends DBParser{
     void testClass() throws FileNotFoundException, UnsupportedEncodingException {
         Fish fish = new Fish();
         fish.setFish(14);
-        fish.printPhotoList();
-        System.out.println(fish.temperatureC(fish.getTemperature()));
-        System.out.println(fish.temperatureF(fish.getTemperature()));
 
-        fish.setFish(2);
-        fish.printPhotoList();
-
-        fish.setFish(5);
-        fish.printPhotoList();
+        System.out.println(fish.getFishName());
+        System.out.println(fish.getTemperatureC());
+        System.out.println(fish.getTemperatureF());
     }
 }
