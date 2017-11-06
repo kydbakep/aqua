@@ -4,24 +4,51 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class DBParser {
-    public DBParser() throws FileNotFoundException {
+class DBParser {
+    DBParser() throws FileNotFoundException, UnsupportedEncodingException {
     }
 
-    private final File folder = new File("./storage/Photos");
+    final File folder = new File("./storage/Photos");
 
-    public void printFirstRow() throws IOException {
-        FileInputStream inputStream = new FileInputStream("./src/main/resources/db-utf.txt");
-        DataInputStream dataInputStream = new DataInputStream(inputStream);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(dataInputStream, "UTF-8"));
-        Scanner s = new Scanner(reader);
-
-        ArrayList<String> list = new ArrayList<String>();
-        while (s.hasNext()) {
-            list.add(s.nextLine());
+    private Scanner getScanner()  {
+        try {
+            FileInputStream dataBaseInputStream = new FileInputStream("./src/main/resources/db-utf.txt");
+            DataInputStream dataInputStream = new DataInputStream(dataBaseInputStream);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(dataInputStream, "UTF-8"));
+            return new Scanner(reader);
+        } catch (UnsupportedEncodingException ex){
+            System.out.println(ex.getMessage());
+            return null;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
-        ArrayList<String> files = listFilesInFolder(folder);
+    public ArrayList<String> fish() throws UnsupportedEncodingException {
+        Scanner scanner = getScanner();
+        ArrayList<String> list = new ArrayList<String>();
+        while (scanner.hasNext()) {
+            list.add(scanner.nextLine());
+        }
+        return list;
+    }
+
+    public ArrayList<String> listFilesInFolder(final File folder) {
+        ArrayList<String> list = new ArrayList<String>();
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                listFilesInFolder(fileEntry);
+            } else {
+                list.add(fileEntry.getName());
+            }
+        }
+        return list;
+    }
+
+    void printAllFirstRows() throws IOException {
+        ArrayList<String> list = fish();
+        ArrayList<String> images = listFilesInFolder(folder);
 
         int fishNumber;
         int photo = 0;
@@ -82,55 +109,82 @@ public class DBParser {
                     + " * layer(s): " + layer(layer)
             );
 
-            for (String file : files) {
+            for (String imageName : images) {
                 try {
-                    photo = (Integer.parseInt(file.split("-", 0)[0]));
+                    photo = (Integer.parseInt(imageName.split("-", 0)[0]));
                 } catch (NumberFormatException ignored) {
                 }
                 if (fishNumber == photo) {
-                    System.out.println(file);
+                    System.out.println(imageName);
                 }
             }
         }
-// ПЕРЕВІРКА НА МАКСИМАЛЬНУ ДОВЖИНУ РЯДКА (ДЛЯ БД)======================================================================
-//        int maxSize = 0;
-//        for (String size : sizes) {
-//            int sz = size.length();
-//            if (sz >= maxSize) {
-//                maxSize = sz;
-//            }
-//        }
-//        System.out.println("\nmaxFamilySize: " + maxSize);
-
-//        System.out.println(tCs);
-//        for (int i = 0; i < tCs.size(); i++) {
-//            int min = 0;
-//            int max;
-//            try {
-//                min = Integer.parseInt(tCs.get(i).split("-")[0]);
-//                max = Integer.parseInt(tCs.get(i).split("-")[1]);
-//            } catch (ArrayIndexOutOfBoundsException outOfBound) {
-//                max = Integer.parseInt(tCs.get(i).split("-")[0]);
-//            }
-//            System.out.println("MIN: " + min);
-//            System.out.println("MAX: " + max);
-//        }
-// END OF 'ПЕРЕВІРКА НА МАКСИМАЛЬНУ ДОВЖИНУ РЯДКА (ДЛЯ БД)'=============================================================
     }
 
-    private ArrayList<String> listFilesInFolder(final File folder) {
-        ArrayList<String> list = new ArrayList<String>();
-        for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                listFilesInFolder(fileEntry);
-            } else {
-                list.add(fileEntry.getName());
+    public ArrayList<Object> getPhotos(int number) throws UnsupportedEncodingException {
+        int photo = number;
+        ArrayList<String> list = fish();
+        ArrayList<String> images = listFilesInFolder(folder);
+        String unit = String.valueOf(list.get(number-1));
+
+        String fishID = (unit
+                .split("@", 0)[0])
+                .trim();
+        String fishName = (unit
+                .split("@", 0)[3])
+                .trim();
+        String fishFamily = (unit
+                .split("@", 0)[1])
+                .trim();
+        String fishFamilyLat = (unit
+                .split("@", 0)[2])
+                .trim();
+        String fishNameLat = (unit
+                .split("@", 0)[4])
+                .trim();
+        String fishArea = (unit
+                .split("@", 0)[5])
+                .trim();
+        String temperature = (unit
+                .split("@", 0)[6])
+                .replace("t", "")
+                .trim();
+        String pH = (unit
+                .split("@", 0)[7])
+                .trim()
+                .replace("pH", "")
+                .trim();
+        String dH = (unit
+                .split("@", 0)[8])
+                .trim().replace("dH", "")
+                .trim();
+        String size = (unit
+                .split("@", 0)[9])
+                .replace(",", ".")
+                .trim();
+        String layer = (unit
+                .split("@", 0)[10])
+                .trim();
+
+        System.out.println("ID: " + fishID + "; NAME: " + fishName);
+
+        ArrayList<Object> arrayList = new ArrayList<Object>();
+
+        for (Object imageName : images) {
+            try {
+                photo = (Integer.parseInt(imageName.toString().split("-", 0)[0]));
+            } catch (NumberFormatException ignored) {
+            }
+            if (number == photo) {
+                arrayList.add(imageName);
             }
         }
-        return list;
+        return arrayList;
     }
 
-    private String removeZeros(Double a) {
+//    ------------------------------------------------------------------------------------------------------------------
+
+    String removeZeros(Double a) {
         int x;
         if (a % 1 == 0) {
             x = a.intValue();
@@ -140,7 +194,7 @@ public class DBParser {
         }
     }
 
-    private String temperatureC(String temperature) {
+    String temperatureC(String temperature) {
         // Temperature (min, max)
         Double minC = 0.0;
         Double maxC;
@@ -159,7 +213,8 @@ public class DBParser {
         } else return removeZeros(minC) + "-" + removeZeros(maxC);
     }
 
-    private String temperatureF(String temperature) {
+    String temperatureF(String temperature) {
+        // Temperature (min, max)
         Double minF = 0.0;
         Double maxF;
         try {
@@ -263,3 +318,29 @@ public class DBParser {
         return layers;
     }
 }
+
+
+// ПЕРЕВІРКА НА МАКСИМАЛЬНУ ДОВЖИНУ РЯДКА (ДЛЯ БД)======================================================================
+//        int maxSize = 0;
+//        for (String size : sizes) {
+//            int sz = size.length();
+//            if (sz >= maxSize) {
+//                maxSize = sz;
+//            }
+//        }
+//        System.out.println("\nmaxFamilySize: " + maxSize);
+
+//        System.out.println(tCs);
+//        for (int i = 0; i < tCs.size(); i++) {
+//            int min = 0;
+//            int max;
+//            try {
+//                min = Integer.parseInt(tCs.get(i).split("-")[0]);
+//                max = Integer.parseInt(tCs.get(i).split("-")[1]);
+//            } catch (ArrayIndexOutOfBoundsException outOfBound) {
+//                max = Integer.parseInt(tCs.get(i).split("-")[0]);
+//            }
+//            System.out.println("MIN: " + min);
+//            System.out.println("MAX: " + max);
+//        }
+// END OF 'ПЕРЕВІРКА НА МАКСИМАЛЬНУ ДОВЖИНУ РЯДКА (ДЛЯ БД)'=============================================================

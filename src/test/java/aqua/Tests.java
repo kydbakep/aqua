@@ -4,32 +4,34 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
-public class Tests {
-    public Tests() throws FileNotFoundException {
-    }
-
-    private DBParser dbParser = new DBParser();
-
-    @Test
-    public void read() throws IOException {
-        dbParser.printFirstRow();
-    }
-
-
-    public String removeZeros(Double a) {
-        int x;
-        if (a % 1 == 0) {
-            x = a.intValue();
-            return String.valueOf(x);
-        } else {
-            return String.valueOf(a);
-        }
+class Tests extends DBParser{
+    Tests() throws FileNotFoundException, UnsupportedEncodingException {
     }
 
     @Test
-    public void testRemovingZeros() {
+    void testRemovingZeros() {
         System.out.println(removeZeros(25.0));
     }
 
+    @Test
+    void testParseFish() throws IOException {
+        printAllFirstRows();
+    }
+
+    @Test
+    void testClass() throws FileNotFoundException, UnsupportedEncodingException {
+        Fish fish = new Fish();
+        fish.setFish(14);
+        fish.printPhotoList();
+        System.out.println(fish.temperatureC(fish.getTemperature()));
+        System.out.println(fish.temperatureF(fish.getTemperature()));
+
+        fish.setFish(2);
+        fish.printPhotoList();
+
+        fish.setFish(5);
+        fish.printPhotoList();
+    }
 }
